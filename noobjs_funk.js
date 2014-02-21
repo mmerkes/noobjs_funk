@@ -3,6 +3,10 @@ module.exports = (function() {
 
   funk.VERSION = '0.0.1';
 
+/*
+---------------Collection Methods-------------------------
+*/
+
   // Iterate through a collection and invoke the callback on each
   // element if it's an array or value if it's an object.
   // The callback is called with (element, index, list) if it's
@@ -48,8 +52,8 @@ module.exports = (function() {
     // Iterate through the collection and pass the element, index,
     // and list into the callback, and push the returned values
     // to the results array.
-    each( collection, function( element, index, list ) {
-      results.push( callback( element, index, list ));
+    each( collection, function( value, index, list ) {
+      results.push( callback( value, index, list ));
     });
 
     // If the collection was not actually a collection, the 
@@ -58,11 +62,32 @@ module.exports = (function() {
     // the results array.
     if( results[0] === collection ) {
       return [];
-    } else {
-      return results;
     }
+    return results;
   };
 
+  // Iterate through a collection and invoke the callback on each
+  // element if it's an array or value if it's an object, and
+  // it turns a list of values into one value, returning it.
+  // The callback is called with ( memory, value, index, list )
+  funk.reduce = function( collection, callback, initial ) {
+    var memory = initial;
+
+    funk.each( collection, function( value, index, list ) {
+      memory = callback( memory, value, index, list );
+    });
+
+    // If collection wasn't really a collection, return the
+    // initial value. Otherwise, return the memory.
+    if( memory === collection ) {
+      return initial;
+    }
+    return memory;
+  };
+
+/*
+-------------------Array Methods------------------
+*/
 
 /*
 -------------Object Methods---------------
