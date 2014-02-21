@@ -5,6 +5,13 @@ var funk = require('../noobjs_funk.js'),
     expect = chai.expect,
     should = chai.should();
 
+// NOOBjs Funk should be able to get funky
+describe('Getting funky', function() {
+  it('should be able to take you to Funky Town', function() {
+    expect(funk.getFunky()).to.be.ok;
+  });
+});
+
 // Test methods that can be used with Collections - Objects and Arrays
 describe('Collection method tests', function() {
   // Test each/forEach
@@ -55,4 +62,40 @@ describe('Collection method tests', function() {
       checkUndefined.should.equal(false);
     });
   });
+
+  // Test map
+  describe('map should iterate through a collection, perform the ' +
+    'callback, and return the result as an array', function() {
+      it('should iterate through a collection, perform a callback, and return an array', function() {
+        var arr = [ 1, 2, 3 ],
+            result = '149';
+        expect( funk.map( arr, function( value ) {
+          return value * value;
+        }).join('')).to.equal( result );
+
+        var obj = { a: 2, b: 3, c: 4};
+        result = '4916';
+        expect( funk.map( obj, function( value ) {
+          return value * value;
+        }).join('')).equal( result );
+      });
+
+      it('should return an empty array it not a collection', function() {
+        expect( funk.map( null, function( value ) {
+          return true;
+        }).length ).to.equal( 0 );
+
+        expect( funk.map( 24, function( value ) {
+          return true;
+        }).length ).to.equal( 0 );
+      })
+    });
 });
+
+
+
+
+
+
+
+

@@ -15,8 +15,9 @@ module.exports = function(grunt) {
     jshint: {
       options: {
         curly: true,
-        eqeqeq: true,
-        eqnull: true,
+        eqeqeq: false,
+        eqnull: false,
+        "-W041": false, // ignores ==
         globals: {
           module: true,
           console: true

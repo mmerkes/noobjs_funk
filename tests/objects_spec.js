@@ -3,6 +3,13 @@
 var funk = require('../noobjs_funk.js'),
     expect = require('chai').expect;
 
+// NOOBjs Funk should be able to get funky
+describe('Getting funky', function() {
+  it('should be able to take you to Funky Town', function() {
+    expect(funk.getFunky()).to.be.ok;
+  });
+});
+
 describe('Object method tests', function() {
   // Test for NaN
   describe('isNaN should identify NaN and return false otherwise', function() {
