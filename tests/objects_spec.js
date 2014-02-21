@@ -34,5 +34,24 @@ describe('Object method tests', function() {
       expect(funk.isArray(null)).to.not.be.ok;
       expect(funk.isArray(funk.isNaN())).to.not.be.ok;
     });
-  })
+  });
+
+  // Test for object
+  describe('isObject should identify an object and return false otherwise', function() {
+    it('should return true if it was passed an object', function() {
+      expect(funk.isObject({})).to.be.ok;
+      expect(funk.isObject({ a: 1, b: 2})).to.be.ok;
+      expect(funk.isObject(Object)).to.be.ok;
+      expect(funk.isObject(Function)).to.be.ok;
+    });
+
+    it('should return false it was passed anything else', function() {
+      expect(funk.isArray(true)).to.not.be.ok;
+      expect(funk.isArray(false)).to.not.be.ok;
+      expect(funk.isArray(0)).to.not.be.ok;
+      expect(funk.isArray(54)).to.not.be.ok;
+      expect(funk.isArray('not an object')).to.not.be.ok;
+      expect(funk.isArray(funk.isNaN)).to.not.be.ok;
+    });
+  });
 });
