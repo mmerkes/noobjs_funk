@@ -61,4 +61,55 @@ describe('Object method tests', function() {
       expect(funk.isArray(funk.isNaN)).to.not.be.ok;
     });
   });
+
+  // Test values
+  describe('values should return all of the values in an object as an array', function() {
+    it('should return the values in an object', function() {
+      expect( funk.values( { a: 1, b: 2, c: 3 } ).join('') ).to.equal('123');
+      expect( funk.values( [ 1, 2, 3 ] ).join('') ).to.equal('123');
+    });
+
+    it('should return an empty array if not passed an object or array', function() {
+      expect( funk.values( 5 ).length ).to.equal(0);
+      expect( funk.isArray( funk.values( null ))).to.be.ok;
+    });
+  });
+
+  // Test keys
+  describe('keys should return all of the keys in an object as an array', function() {
+    it('should return the keys in an array', function() {
+      expect( funk.keys( { a: 1, b: 2, c: 3 } ).join('')).to.equal('abc');
+      expect( funk.keys( [ 4, 5, 6 ] ).join('')).to.equal('012');
+    });
+
+    it('should return an empty array if not passed an object or array', function() {
+      expect( funk.keys( 5 ).length ).to.equal(0);
+      expect( funk.isArray( funk.keys( null ))).to.be.ok;
+    });
+  });
+
+  // Test invert
+  describe('invert should switch the keys and values in an object', function() {
+    it('should invert an object', function() {
+      var test = funk.invert( { a: 1, b: 2, c: 3 } );
+      expect( funk.values( test ).join('') ).to.equal('abc');
+      expect( funk.keys( test ).join('') ).to.equal('123');
+
+      test = funk.invert([ 1, 2, 3 ]);
+      expect( funk.values( test ).join('') ).to.equal('012');
+      expect( funk.keys( test ).join('') ).to.equal('123');
+    });
+
+    it('should return an empty object if not passed an array or object', function() {
+      expect( funk.isObject( funk.invert(5) ) ).to.be.ok;
+      expect( funk.keys( funk.invert( null ) ).length ).to.equal(0);
+    });
+  });
 });
+
+
+
+
+
+
+

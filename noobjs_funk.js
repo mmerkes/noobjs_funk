@@ -108,7 +108,7 @@ module.exports = (function() {
     }
     // Return -1 if the value isn't found.
     return -1;
-  }
+  };
 
   // union computes the union of passed in array or values, which is the
   // unique set of values from one or more arrays, in order.
@@ -228,9 +228,57 @@ module.exports = (function() {
     typeof operator. However, the typeof operator will return
     'function' for Object and Function, which are actually objects.
   */
+
+  // Values pulls all of the values out of an object
+  funk.values = function( object ) {
+    var results = [];
+    // Iterate through the object
+    for( var key in object ) {
+      // If object is an object or array, it will push the
+      // values to the results array. Otherwise, this will
+      // not be called and an empty array will be returned
+      results.push( object[key] );
+    }
+
+    return results;
+  };
+
+  // Keys pulls out all of the keys from an object
+  funk.keys = function( object ) {
+    var results = [];
+
+    for( var key in object ) {
+      // If object is an object or array, it will push the keys
+      // to the results array. Otherwise, this will not be called
+      // and an empty array will be returned;
+      results.push( key );
+    }
+
+    return results;
+  };
+
+  // Invert takes an object and switches the values and the keys.
+  // The values should be unique, or invert will overwrite them
+  // when it gets to the next matching value.
+  // i.e. { a: 1, b: 2 } -> { 1: 'a', 2: 'b' }
+  funk.invert = function( object ) {
+    var results = {};
+
+    // Iterate through the object to flip keys and values
+    for( var key in object ) {
+      // If object is an object or array, it will set the key in 
+      // results to be the value of object, and the value in results
+      // to be the key in object. Otherwise, it will skip this
+      // and return an empty object.
+      results[ object[key] ] = key; 
+    }
+
+    return results;
+  };
 /*
 ---------------Other Methods---------------
 */
+  // Method to get a little funky and print 'Funky Town' to console
   funk.getFunky = function() {
     funk.each( funkyTown, function( value ) {
       console.log(value);
