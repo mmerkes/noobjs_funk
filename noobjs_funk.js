@@ -89,6 +89,88 @@ module.exports = (function() {
 -------------------Array Methods------------------
 */
 
+  // indexOf finds the index of the first instance a value
+  // appears in an array, or -1 if it is not present. 
+  // This is tests with ===, so it returns exact matches only.
+  // Returns -1 if an array isn't passed in
+  funk.indexOf = function( list, value ) {
+    // Make sure that list is an array or string, otherwise return -1
+    if( list == null || list.length !== +list.length ) {
+      return -1;
+    }
+    // Iterate through the array to find the first instance of the value
+    var length = list.length;
+    for( var i = 0; i < length; i++ ) {
+      if( list[i] === value ) {
+        // Return the index if the value is found
+        return i;
+      }
+    }
+    // Return -1 if the value isn't found.
+    return -1;
+  }
+
+  // union computes the union of passed in array or values, which is the
+  // unique set of values from one or more arrays, in order.
+  // i.e. funk.union( [ 1, 2, 4 ], [ 0, 1, 2, 3, 6 ], -1 ); 
+  // -> returns [ 1, 2, 4, 0, 3, 6, -1 ]
+  funk.union = function( ) {
+    // Access the arguments passed into the function
+    var args = arguments, 
+        length = args.length,
+        // Using an object to store element as keys to find uniques
+        unique = {},
+        // store unique arrays to differentiate from string
+        uniqueArrays = {},
+        // If a value is unique, push it to the results array
+        results = [],
+        // store hold the value to save typing
+        temp,
+        i, j;
+
+    // Iterate through the arguments to find all of the unique values
+    for( i = 0; i < length; i++ ) {
+      temp = args[i];
+      if( !funk.isArray(temp) ) {
+        if( !unique[temp] ) {
+          unique[temp] = true;
+          results.push( temp );
+        }
+      } else {
+        for(j = 0; j < temp.length; j++ ) {
+          // When trying to use an array as a key to an object, it will
+          // be converted to a string first. Fortunately, it will also
+          // be converted to a string when you test the key. However,
+          // if you have '1,2,3' and [ 1, 2, 3 ] in your set, the object
+          // test will think they're the same object. Thus, the extra code.
+          if( funk.isArray( temp[j] )) {
+            if( !uniqueArrays[temp[j]] ) {
+              uniqueArrays[temp[j]] = true;
+              results.push(temp[j]);
+            }
+          } 
+          // If it's not an array, check for uniqueness
+          else if( !unique[temp[j]] ) {
+            unique[temp[j]] = true;
+            results.push( temp[j] );
+          }
+        }
+      }
+    }
+
+    return results;
+  };
+
+  var arr1 = [ 1, 2, 3, 4 ],
+          arr2 = [[ 2, 4, 6, 8 ], [ 3, 5, 7, 9 ]],
+          val1 = 'string',
+          val2 = 27,
+          val3 = undefined;
+
+          var arr = [ 1, 2, 3, 3, 2, 1];
+
+  // Deep union -> like union put digs down
+
 /*
 -------------Object Methods---------------
 */
