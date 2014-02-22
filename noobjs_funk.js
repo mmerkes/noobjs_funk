@@ -161,15 +161,47 @@ module.exports = (function() {
     return results;
   };
 
-  var arr1 = [ 1, 2, 3, 4 ],
-          arr2 = [[ 2, 4, 6, 8 ], [ 3, 5, 7, 9 ]],
-          val1 = 'string',
-          val2 = 27,
-          val3 = undefined;
-
-          var arr = [ 1, 2, 3, 3, 2, 1];
-
   // Deep union -> like union put digs down
+
+  // zip merges together the values of each of the arrays with the values
+  // at the corresponding position. 
+  // i.e. funk.zip( [1, 2], ['a', 'b'])
+  // -> [[ 1, 'a' ], [ 2, 'b' ]]
+  funk.zip = function() {
+    var max_length = 0,
+        results = [],
+        i, j;
+
+    // Check to see if more than one argument was passed into the method
+    if( arguments.length === 1 ) {
+      for( i = 0; i < arguments[0].length; i++ ) {
+        results[i] = arguments[0][i];
+      }
+      return results;
+    }
+
+    // Find the longest array passed in and save that as it will
+    // be the length of the result
+    for( i = 0; i < arguments.length; i++ ) {
+      if( arguments[i].length > max_length ) {
+        max_length = arguments[i].length;
+      }
+    }
+
+    // Iterate through all of the arrays in order and add
+    // the elements into the results array at the corresponding
+    // position
+    for( i = 0; i < arguments.length; i++ ) {
+      for( j = 0; j < arguments[i].length; j++ ) {
+        if( results[j] === undefined ) {
+          results[j] = [];
+        }
+        results[j].push( arguments[i][j] );
+      }      
+    }
+
+    return results;
+  };
 
 /*
 -------------Object Methods---------------

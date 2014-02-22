@@ -52,6 +52,22 @@ describe('Array method tests', function() {
       expect( funk.union( '1,2,3', [[1,2,3]] ).join('')).to.not.equal('1,2,3');
     });
   });
+
+  // Test zip
+  describe('zip should take arrays and merge them into one array with ' +
+    'elements at corresponding positions', function() {
+    it('should successfully zip multiple arrays', function() {
+      var arr1 = [ 1, 2, 3, 4, 5 ],
+          arr2 = [ 'a', 'b', 'c', 'd', 'e'],
+          arr3 = [ 1, 2, 3, 4, 5 ];
+      expect( funk.zip( arr1, arr2, arr3 ).join('')).to
+        .equal("1,a,12,b,23,c,34,d,45,e,5");
+    });
+
+    it('should return a one-level array if sent a string or single array', function() {
+      expect( funk.zip( 'string' ).join()).to.equal( 's,t,r,i,n,g' );
+    });
+  });
 });
 
 
