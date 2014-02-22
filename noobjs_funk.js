@@ -386,6 +386,31 @@ module.exports = (function() {
     // at the moment.
     return results;
   };
+
+  // Extend copies all properties in the source arguments into the 
+  // destination object, and returns the destination object. It's
+  // in order, so if any properties are named the same thing, the
+  // last one will be the one in the object
+  // i.e. funk.extend( {a: 1}, {b: 2, c: 3}, { d: 4 } )
+  // -> {a: 1, b: 2, c: 3, d: 4}
+  // or... funk.extend( {a: 1}, {b: 2}, {b: 3} )
+  // -> { a: 1, b: 3 }
+  funk.extend = function( destination ) {
+    // Iterate through the arguments, skipping the first,
+    // to get all of the source objects
+    for( var i = 1; i < arguments.length; i++ ) {
+      // Iterate through all of the properties in the argument
+      for( var key in arguments[i] ) {
+        // and add it to the destination object
+        destination[key] = arguments[i][key];
+      }
+    }
+
+    // return the modified object
+    return destination;
+  };
+
+
 /*
 ---------------Other Methods---------------
 */

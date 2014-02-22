@@ -142,6 +142,26 @@ describe('Collection method tests', function() {
       expect( test.join() ).to.equal(',');
     });
   });
+
+  // Test extend
+  describe('extend should copy the contents of source objects into a ' +
+    'destination object and return that object', function() {
+    it('should copy the contents of sources into the destination', function() {
+      var test = funk.extend( {a: 1}, {b: 2, c: 3}, { d: 4 } );
+      expect( funk.keys( test ).join('') ).to.equal('abcd');
+      expect( funk.values( test ).join('') ).to.equal('1234');
+    });
+
+    it('should overwrite earlier values if a later source object ' +
+      'has the same property name', function() {
+      expect( funk.extend( {a: 1}, {b: 2}, {b: 3} )['b'] ).to.equal(3);
+    });
+
+    it('should ignore sources that are not objects or arrays', function() {
+      expect( funk.keys( funk.extend( {a: 1}, 2, 3 )).length )
+        .to.equal(1);
+    });
+  });
 });
 
 
