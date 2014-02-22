@@ -105,6 +105,19 @@ describe('Object method tests', function() {
       expect( funk.keys( funk.invert( null ) ).length ).to.equal(0);
     });
   });
+
+  // Test pick
+  describe('pick should take an object and additional arguments, value or arrays ' +
+    'and return the object with only those keys', function() {
+    it('should return an object with only the specified keys', function() {
+      expect( funk.keys( funk.pick( { a: 1, b: 2, c: 3 }, 'b', 'c'))
+        .join('')).to.equal('bc');
+      expect( funk.keys( funk.pick( { a: 1, b: 2, c: 3, d: 4, e: 5 },
+        [ 'a', 'b' ], 'd')).join('') ).to.equal('abd');
+      expect( funk.keys( funk.pick( { a: 1, b: 2, c: 3 }, 'b', 'f'))
+        .join('') ).to.equal('b');
+    });
+  });
 });
 
 

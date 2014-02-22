@@ -93,7 +93,7 @@ module.exports = (function() {
   // appears in an array, or -1 if it is not present. 
   // This is tests with ===, so it returns exact matches only.
   // Returns -1 if an array isn't passed in
-  funk.indexOf = function( list, value ) {
+  var indexOf = funk.indexOf = function( list, value ) {
     // Make sure that list is an array or string, otherwise return -1
     if( list == null || list.length !== +list.length ) {
       return -1;
@@ -214,6 +214,9 @@ module.exports = (function() {
     // Iterate through the array to check if it's an array
     each( array, function( value ) {
       if( isArray( value )) {
+        // If value is an array, pass it into the _flattener function
+        // which will flatten the array and push the elements to the 
+        // results array.
         _flattener( value, shallow, function( value ) {
           results.push( value );
         });
@@ -227,17 +230,25 @@ module.exports = (function() {
     return results;
   };
 
+  // Helper function that takes an array, iterates through it,
+  // and if the element is an array, it calls itself recursively
+  // if shallow is not true, or it sends the element into the callback
   var _flattener = function( value, shallow, callback ) {
-      if( isArray( value ) ) {
-        each( value, function( val ) {
-          if( !shallow && isArray( val )) {
-            _flattener( val, false, callback );
-          }
-          else {
-            callback( val );
-          }
-        });
-      }
+    // Check that the value is an array
+    if( isArray( value ) ) {
+      // Iterate through the array
+      each( value, function( val ) {
+        // If shallow is false and val is an array,
+        // call flattener recursively
+        if( !shallow && isArray( val )) {
+          _flattener( val, false, callback );
+        }
+        // Otherwise, send val into the callback
+        else {
+          callback( val );
+        }
+      });
+    }
   };
 
 /*
@@ -310,6 +321,53 @@ module.exports = (function() {
       results[ object[key] ] = key; 
     }
 
+    return results;
+  };
+
+  // pick takes an object as it's first argument, and keys or 
+  // arrays of keys as the subsequent arguments, and returns
+  // an object with only those keys.
+  funk.pick = function( object ) {
+    var keys = [],
+        results = {},
+        i, key;
+
+    // Iterate through the arguments, skipping the first, which
+    // should be object, and push all of the keys to the keys
+    // array.
+    for( i = 1; i < arguments.length; i++ ) {
+      // If the argument exists, continue
+      if( arguments[i] != null ) {
+        // If it's an array, go through each element and add
+        // it to the keys array.
+        if( isArray( arguments[i] )) {
+          each( arguments[i], function( key ) {
+            // The object's keys will be strings, so in order for
+            // the indexOf function to identify matches, it will 
+            // need to compare it with strings.
+            keys.push( String(key) );
+          });
+        }
+        else {
+          // If the argument is not an array, convert it to a string
+          // and push it to the keys array.
+          keys.push( String(arguments[i]) );
+        }
+      }
+    }
+
+    // Iterate through the object to find all of the matching keys.
+    // If it's a match, add the key and value to the results object.
+    // Otherwise, ignore it.
+    for( key in object ) {
+      if( indexOf( keys, key ) !== -1 ) {
+        results[key] = object[key];
+      }
+    }
+
+    // Underscore will fire an error if pick is not passed an
+    // array or object. This, however, returns an empty object
+    // at the moment.
     return results;
   };
 /*
