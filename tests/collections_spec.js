@@ -118,6 +118,30 @@ describe('Collection method tests', function() {
       }, false )).to.equal(false);
     });
   });
+
+  // Test pluck
+  describe('pluck should iterate through an array of object and pluck ' +
+    'the values matching the property name passed', function() {
+    it('should pluck the values for the matching property', function() {
+      expect( funk.pluck( [ {a: 1, b:2, c: 3}, {a: 1, c: 3, d: 4 }], 'a')
+        .join('')).to.equal('11');
+      var test = funk.pluck( [ {a: 1, b: 2}, {b: 2} ], 'a' );
+      expect( test[1] ).to.equal(undefined);
+      expect( test.length ).to.equal(2);
+    });
+
+    it('should return an empty array if not passed an array of properties', function() {
+      expect( funk.pluck( null, 'a').length ).to.equal(0);
+      expect( funk.isArray( funk.pluck( 5, 'a')) ).to.be.ok;
+    });
+
+    it('should return an array of undefined if not passed a key to match', function() {
+      var test = funk.pluck([ {a: 1, b: 2}, {b: 2} ]);
+      expect( test.length ).to.equal(2);
+      // When joined, undefined is just an empty string
+      expect( test.join() ).to.equal(',');
+    });
+  });
 });
 
 

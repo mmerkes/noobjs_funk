@@ -85,6 +85,22 @@ module.exports = (function() {
     return memory;
   };
 
+  // pluck takes an array of objects as it's first argument,
+  // and a property name as it's second argument, and goes through
+  // the objects and returns an array of the values for the property name.
+  funk.pluck = function( list, property ) {
+    var results = [],
+        i;
+
+    // Iterate through the list of objects passed into pluck
+    each( list, function( object ) {
+      // push the value of the matching property in the object
+      results.push( object[property] );
+    });
+
+    return results;
+  };
+
 /*
 -------------------Array Methods------------------
 */
