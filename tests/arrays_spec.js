@@ -68,6 +68,27 @@ describe('Array method tests', function() {
       expect( funk.zip( 'string' ).join()).to.equal( 's,t,r,i,n,g' );
     });
   });
+
+  // Test flatten
+  describe('flatten should take a nested array as an argument, and return ' +
+    'a flattened array. It should take an optional parameter of shallow ' +
+    'to only go one deep', function() {
+    it('should flatten a nested array to any depth', function() {
+      expect( funk.flatten( [1, [2], [3, [[4]]]]).join('') )
+        .to.equal('1234');
+    });
+
+    it('should only flatten one level if shallow is true', function() {
+      expect( funk.isArray( funk.flatten( [1, [2], [3, [[4]]]], true )[3] )).to.be.ok;
+      expect( funk.flatten( funk.flatten( [1, [2], [3, [[4]]]], true )).join('') )
+        .to.equal( '1234');
+    });
+
+    it('should return an empty array if not passed an array', function() {
+      expect( funk.isArray( funk.flatten( 4 ))).to.be.ok;
+      expect( funk.flatten( null ).length ).to.equal( 0 );
+    });
+  });
 });
 
 

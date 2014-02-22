@@ -203,6 +203,43 @@ module.exports = (function() {
     return results;
   };
 
+  // Flatten flattens a nested array of any depth. Takes an optional
+  // parameter of shallow. If true, the array will only be flattened
+  // a single level.
+  // i.e. funk.flatten( [[[[1]]], [2], 3]) -> [ 1, 2, 3 ]
+  // or... funk.flatten( [[[1]], [2], 3]) -> [[1], 2, 3 ]
+  var flatten = funk.flatten = function( array, shallow ) {
+    var results = [];
+
+    // Iterate through the array to check if it's an array
+    each( array, function( value ) {
+      if( isArray( value )) {
+        _flattener( value, shallow, function( value ) {
+          results.push( value );
+        });
+      }
+      else {
+        // If value is not an array, push it to the results array
+        results.push( value );
+      }
+    });
+
+    return results;
+  };
+
+  var _flattener = function( value, shallow, callback ) {
+      if( isArray( value ) ) {
+        each( value, function( val ) {
+          if( !shallow && isArray( val )) {
+            _flattener( val, false, callback );
+          }
+          else {
+            callback( val );
+          }
+        });
+      }
+  };
+
 /*
 -------------Object Methods---------------
 */
@@ -214,12 +251,12 @@ module.exports = (function() {
   };
 
   // Checks to see if value is an instance of array
-  funk.isArray = function( value ) {
+  var isArray = funk.isArray = function( value ) {
     return value instanceof Array;
   };
 
   // Checks to see if value is an object
-  funk.isObject = function( value ) {
+  var isObject = funk.isObject = function( value ) {
     // See if value still equals itself if you turn it into an object
     return value === Object(value);
   };
