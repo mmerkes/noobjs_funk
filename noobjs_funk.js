@@ -101,6 +101,21 @@ module.exports = (function() {
     return results;
   };
 
+  // find takes a collection and a callback. It goes through each
+  // value until if finds a value that causes the callback to return
+  // true. If no match is found, it returns undefined.
+  funk.find = function( collection, callback ) {
+    // Iterate through the collection to look for a match
+    for( var key in collection ) {
+      // If the callback returns true, return the value and call it a day!
+      if( callback( collection[key] )) {
+        return collection[key];
+      }
+    }
+    // If no match was found, return undefined
+    return undefined;
+  };
+
 /*
 -------------------Array Methods------------------
 */

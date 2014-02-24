@@ -162,6 +162,31 @@ describe('Collection method tests', function() {
         .to.equal(1);
     });
   });
+
+  // Test find
+  describe('find should look through each value in a collection and ' +
+    'return the first one that the callback return true, or undefined if ' +
+    'no value satisfies the callback', function() {
+    it('should return the first matching value in a collection', function() {
+      expect( funk.find( [ 1,2,3,4 ], function( value ) {
+        return value > 2;
+      } )).to.equal(3);
+
+      expect( funk.find( { a: 1, b: 2, c: 3, d: 4 }, function( value ) {
+        return value > 1 && value % 2;
+      })).to.equal( 3 );
+    });
+
+    it('should return undefined if a match is not found', function() {
+      expect( funk.find( [ 1, 2, 3 ], function( value ) {
+        return value > 4;
+      })).to.equal( undefined );
+
+      expect( funk.find( 5, function( value ) {
+        return value > 3;
+      })).to.equal( undefined );
+    })
+  });
 });
 
 
