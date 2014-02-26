@@ -116,6 +116,27 @@ module.exports = (function() {
     return undefined;
   };
 
+  // filter takes a collection and a truthy test (predicate), and returns
+  // all values into an array that pass the test. It should return an empty
+  // array if no values match
+  funk.filter = function( collection, truther ) {
+    // store the matches
+    var results = [];
+
+    // Iterate through the collection
+    each( collection, function( value ) {
+      // If the value passess the truther test
+      if( truther( value ) ) {
+        // push the value into the results array
+        results.push( value );
+      }
+      // Otherwise, do nothing
+    });
+
+    // return the results
+    return results;
+  };
+
 /*
 -------------------Array Methods------------------
 */

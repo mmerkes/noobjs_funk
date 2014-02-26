@@ -187,6 +187,31 @@ describe('Collection method tests', function() {
       })).to.equal( undefined );
     })
   });
+
+  // Test filter
+  describe('should look through each value in a collection and return an array ' +
+    'of all the items that passed the truthy test', function() {
+    it('should return an array of all values that pass the truthy test', function() {
+      expect( funk.filter( [ 1, 2, 3, 4, 5 ], function( num ) {
+        return num > 2;
+      }).join('') ).to.equal( '345' );
+      expect( funk.filter( { a: 1, b: 2, c: 3, d: 4, e: 5 }, function( num ) {
+        return num < 3;
+      }).join('') ).to.equal( '12' );
+      expect( funk.filter( [ 1, 2, 3 ], function( num ) {
+        return num > 3;
+      }).length ).to.equal(0);
+    });
+
+    it('should return an empty array if not passed a collection', function() {
+      expect( funk.isArray( funk.filter( 5, function(num) { 
+        return num > 2; 
+      }))).to.be.ok;
+      expect( funk.filter( null, function( num ) {
+        return num === null;
+      }).length ).to.equal(0);
+    })
+  });
 });
 
 
