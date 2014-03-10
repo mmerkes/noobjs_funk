@@ -23,7 +23,7 @@ module.exports = function(grunt) {
           console: true
         }
       },
-      files: ['Gruntfile.js', 'test/**/*.js', 'noobjs_funk.js']
+      files: ['Gruntfile.js', 'tests/**/*.js', 'noobjs_funk.js']
     }
   });
 

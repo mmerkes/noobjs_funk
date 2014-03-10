@@ -137,6 +137,35 @@ module.exports = (function() {
     return results;
   };
 
+  // where looks through each value in a collection, and returns
+  // an array of each key-value pair that matches the list properties.
+  // i.e. funk.where( listOfPlayers, { team: 'Packers', year: 1967 });
+  // -> [ { team: 'Packers', year: 1967, name: 'Bart Starr' },
+  //      { team: 'Packers', year: 1967, name: 'Willie Davis'}, ...]
+  funk.where = function( collection, properties ) {
+    // Save the matches in an array
+    var results = [];
+    
+    // Iterate through each item in the collection and test them
+    each( collection, function( object ) {
+      // Innocent until proven guilty
+      // Iterate through the properites and see if we have
+      // pairs that don't match
+      for( var key in properties ) {
+        // If we find one that doesn't match, return undefined
+        if( object[key] !== properties[key] ) {
+          return;
+        }
+      }
+
+      // If all properties were found in the object and 
+      // we didn't return undefined, we have a match
+      return results.push( object );
+    });
+
+    return results;
+  };
+
 /*
 -------------------Array Methods------------------
 */
