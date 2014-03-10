@@ -217,6 +217,38 @@ module.exports = (function() {
     return results;
   };
 
+  // every returns true if all items in a list pass the 
+  // truthy test, and false if any items fail. However,
+  // it returns true if not pass a list.
+  funk.every = function( collection, truther ) {
+    // Because result is set to true, if collection is
+    // never iterated through because it's not a collection,
+    // every will return true. This seems usual behavior,
+    // but we're keeping it to match Underscore.
+    var result = true;
+
+    // Check that collection is not null or undefined
+    if( collection == null ) {
+      return result;
+    }
+
+    /******************************
+    Write this into a function as it's in many methods
+    *******************************/
+    // Iterate through the collection
+    each( collection, function( value ) {
+      // If the value fails the truther test
+      if( !truther( value ) ) {
+        // Set result to false
+        return result = false;
+      }
+    });
+
+    // Return result, which would still be true if
+    // no items failed the truther test
+    return result;
+  };
+
 /*
 -------------------Array Methods------------------
 */

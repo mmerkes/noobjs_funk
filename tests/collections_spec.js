@@ -297,6 +297,39 @@ describe('Collection method tests', function() {
       }).length ).to.equal(0);
     });
   });
+
+  // Test every
+  describe('every should look through each value in a collection and return true ' +
+    'if all of the items passed the truthy test', function() {
+    it('should return true if all of the items pass the truthy test', function() {
+      expect( funk.every( [ 3, 4, 5 ], function( num ) {
+        return num > 2;
+      }) ).to.be.ok;
+
+      expect( funk.reject( { a: 1, b: 2, c: 3, d: 4, e: 5 }, function( num ) {
+        return num < 6;
+      }) ).to.be.ok;
+    });
+
+    it('should return false if any items fail truthy test', function() {
+      expect( funk.every( [1, 2, 3, 4, 5], function( item ) {
+        return item > 1;
+      })).to.not.be.ok;
+
+      expect( funk.every( { a: 1, b: 2, c: 3 }, function( item ) {
+        return item > 1;
+      } )).to.not.be.ok;
+    });
+
+    it('should, oddly, return true if not passed a collection', function() {
+      expect( funk.every( 5, function(num) { 
+        return num > 2; 
+      })).to.be.ok;
+      expect( funk.reject( null, function( num ) {
+        return num === null;
+      }) ).to.ok;
+    });
+  });
 });
 
 
