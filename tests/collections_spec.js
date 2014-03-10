@@ -272,6 +272,31 @@ describe('Collection method tests', function() {
       expect( funk.findWhere( 5, 5 ) ).to.equal( undefined );
     });
   });
+
+  // Test reject
+  describe('reject should look through each value in a collection and return an array ' +
+    'of all the items that failed the truthy test', function() {
+    it('should return an array of all values that fail the truthy test', function() {
+      expect( funk.reject( [ 1, 2, 3, 4, 5 ], function( num ) {
+        return num > 2;
+      }).join('') ).to.equal( '12' );
+      expect( funk.reject( { a: 1, b: 2, c: 3, d: 4, e: 5 }, function( num ) {
+        return num < 3;
+      }).join('') ).to.equal( '345' );
+      expect( funk.reject( [ 1, 2, 3 ], function( num ) {
+        return num > 3;
+      }).length ).to.equal(3);
+    });
+
+    it('should return an empty array if not passed a collection', function() {
+      expect( funk.isArray( funk.reject( 5, function(num) { 
+        return num > 2; 
+      }))).to.be.ok;
+      expect( funk.reject( null, function( num ) {
+        return num === null;
+      }).length ).to.equal(0);
+    });
+  });
 });
 
 

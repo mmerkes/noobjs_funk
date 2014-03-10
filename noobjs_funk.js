@@ -125,7 +125,7 @@ module.exports = (function() {
 
     // Iterate through the collection
     each( collection, function( value ) {
-      // If the value passess the truther test
+      // If the value passes the truther test
       if( truther( value ) ) {
         // push the value into the results array
         results.push( value );
@@ -195,6 +195,26 @@ module.exports = (function() {
     }
     // No matches were found. Return undefined.
     return undefined;
+  };
+
+  // reject returns a list without the elements that
+  // passed the truth test (predicate). The opposite of filter.
+  funk.reject = function( collection, truther ) {
+    // store the rejects
+    var results = [];
+
+    // Iterate through the collection
+    each( collection, function( value ) {
+      // If the value fails the truther test
+      if( !truther( value ) ) {
+        // push the value into the results array
+        results.push( value );
+      }
+      // Otherwise, do nothing
+    });
+
+    // return the results
+    return results;
   };
 
 /*
