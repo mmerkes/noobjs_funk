@@ -232,7 +232,7 @@ describe('Collection method tests', function() {
       }).length ).to.equal( 2 );
     });
 
-    it('should return an empty array if there are not matches', function() {
+    it('should return an empty array if there are no matches', function() {
       var objList = [ { team: 'Packers', year: 1967, name: 'Bart Starr' },
                       { team: 'Packers', year: 1967, name: 'Willie Davis'},
                       { team: 'Chiefs', year: 1967, name: 'Buck Buchanan'},
@@ -241,6 +241,35 @@ describe('Collection method tests', function() {
       expect( results.length ).to.equal( 0 );
 
       expect( funk.where( 5, 5 ).length ).to.equal( 0 );
+    });
+  });
+
+  // Test findWhere
+  describe('findWhere should look through each value in a collection and return ' +
+    'an object that matches the list of properties or undefined if no match', function() {
+    it('should return all of the matches key-value pairs in an array', function() {
+      var arrayList = [[1,2,3],[1,2,3],[1,5,3]];
+      expect( funk.findWhere( arrayList, { '1': 2 }).join('') )
+        .to.equal("123");
+
+      var objList = [ { team: 'Packers', year: 1967, name: 'Bart Starr' },
+                      { team: 'Packers', year: 1967, name: 'Willie Davis'},
+                      { team: 'Chiefs', year: 1967, name: 'Buck Buchanan'},
+                      { team: 'Chiefs', year: 1967, name: 'Jerry Mays'}];
+      var result = funk.findWhere( objList, { team: 'Packers', year: 1967 } );
+      expect( result.team ).to.equal( 'Packers' );
+      expect( result.name ).to.equal( 'Bart Starr' );
+    });
+
+    it('should return undefined if there are no matches', function() {
+      var objList = [ { team: 'Packers', year: 1967, name: 'Bart Starr' },
+                      { team: 'Packers', year: 1967, name: 'Willie Davis'},
+                      { team: 'Chiefs', year: 1967, name: 'Buck Buchanan'},
+                      { team: 'Chiefs', year: 1967, name: 'Jerry Mays'}];
+      var result = funk.findWhere( objList, { team: 'Cowboys', year: 1967 } );
+      expect( result ).to.equal( undefined );
+
+      expect( funk.findWhere( 5, 5 ) ).to.equal( undefined );
     });
   });
 });

@@ -166,6 +166,37 @@ module.exports = (function() {
     return results;
   };
 
+  // findWhere looks through a list and finds the first value
+  // that matches keys and values passed in, and returns it.
+  // funk.findWhere( myList, { color: 'green', size: 'S' });
+  // -> { color: 'green', size: 'S', name: 'My t-shirt' }
+  funk.findWhere = function( collection, properties ) {
+    var i, key, object, match;
+
+    // Iterate through each item until you find a match
+    for( i = 0; i < collection.length; i++ ) {
+      // Save a shortcut to the current object
+      object = collection[i];
+      // Set match to true
+      match = true;
+      // Check each key/value pair in the properties
+      for( key in properties ) {
+        // If we find one that doesn't match, set match to false
+        // and break the for in loop
+        if( object[key] !== properties[key] ) {
+          match = false;
+          break;
+        }
+      }
+      // If all properties matched an object, return it.
+      if( match ) {
+        return object;
+      }
+    }
+    // No matches were found. Return undefined.
+    return undefined;
+  };
+
 /*
 -------------------Array Methods------------------
 */
