@@ -369,8 +369,31 @@ describe('Collection method tests', function() {
       }) ).to.not.be.ok;
     });
   });
-});
 
+  // Test contains
+  describe('some should look through the values in a collection and return ' +
+    'true if any of the values strictly equal the single value passed', function() {
+    it('should return true if any of the items pass the truthy test', function() {
+      expect( funk.contains( [ 3, 4, 5 ], 4 ) ).to.be.ok;
+
+      expect( funk.contains( { a: 1, b: 2, c: 3, d: 4, e: 5 }, 2 ) ).to.be.ok; 
+    });
+
+    it('should return false if none of the items match the passed in value', function() {
+      expect( funk.contains( [1, 2, 3, 4, 5], 8 )).to.not.be.ok;
+
+      expect( funk.contains( { a: 1, b: 2, c: 3 }, 4 )).to.not.be.ok;
+
+      // Check strictly equal
+      expect( funk.contains( [ null, false, undefined ], 0 )).to.not.be.ok;
+    });
+
+    it('should return false if not passed a collection', function() {
+      expect( funk.contains( 5, 5 )).to.not.be.ok;
+      expect( funk.contains( null, null ) ).to.not.be.ok;
+    });
+  });
+});
 
 
 

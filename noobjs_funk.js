@@ -253,22 +253,54 @@ module.exports = (function() {
   // pass the predicate truth test. If no predicate is
   // provided it will just check if any of the values are truthy.
   funk.some = function( collection, predicate ) {
+    // If collection is not actually a collection, return false.
     if( !collection ) {
       return false;
     }
 
+    // If a predicate was not passed into the arguments,
+    // set the predicate to return the value for a straight
+    // truthy test.
     if( !predicate ) {
       predicate = function( value ) {
         return value;
       }
     }
 
+    // Iterate through the collection
     for( var key in collection ) {
+      // And run the values through the predicate to test truthiness
       if( predicate( collection[key] ) ) {
+        // And return true if any values pass the predicate test
         return true;
       }
     }
+    // If no values passed the predicate test, return false.
+    return false;
+  };
 
+  // Returns true if any values in the collection strictly
+  // equal the value passed in. Use indexOf if passed an array.
+  funk.contains = function( collection, value ) {
+    // Check if the collection is an array
+    if( isArray( collection )) {
+      // Use indexOf to see if the array contains the value
+      if( indexOf( collection, value ) !== -1 ) {
+        // Return true if it return an index that's not -1
+        return true;
+      }
+      // Otherwise, return false.
+      return false;
+    }
+    // Iterate through the collection
+    for( var key in collection ) {
+      // See if the value in collection matches the value argument
+      if( collection[key] === value ) {
+        // Return true if there's a match
+        return true;
+      }
+    }
+    // Otherwise, return false
     return false;
   };
 
