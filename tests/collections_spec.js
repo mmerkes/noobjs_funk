@@ -306,7 +306,7 @@ describe('Collection method tests', function() {
         return num > 2;
       }) ).to.be.ok;
 
-      expect( funk.reject( { a: 1, b: 2, c: 3, d: 4, e: 5 }, function( num ) {
+      expect( funk.every( { a: 1, b: 2, c: 3, d: 4, e: 5 }, function( num ) {
         return num < 6;
       }) ).to.be.ok;
     });
@@ -325,9 +325,48 @@ describe('Collection method tests', function() {
       expect( funk.every( 5, function(num) { 
         return num > 2; 
       })).to.be.ok;
-      expect( funk.reject( null, function( num ) {
+      expect( funk.every( null, function( num ) {
         return num === null;
       }) ).to.ok;
+    });
+  });
+
+  // Test some
+  describe('some should look through the values in a collection and return ' +
+    'true if any of the values pass the predicate test', function() {
+    it('should return true if any of the items pass the truthy test', function() {
+      expect( funk.some( [ 3, 4, 5 ], function( num ) {
+        return num > 3;
+      }) ).to.be.ok;
+
+      expect( funk.some( { a: 1, b: 2, c: 3, d: 4, e: 5 }, function( num ) {
+        return num < 4;
+      }) ).to.be.ok; 
+    });
+
+    it('should evaluate values as truthy if no predicate is passed in', function() {
+      expect( funk.some( [1, 2, 3, 4, 5] ) ).to.be.ok;
+
+      expect( funk.some( [null, undefined, 0] ) ).to.not.be.ok;
+    });
+
+    it('should return false if all of the items fail truthy test', function() {
+      expect( funk.some( [1, 2, 3, 4, 5], function( item ) {
+        return item < 1;
+      })).to.not.be.ok;
+
+      expect( funk.some( { a: 1, b: 2, c: 3 }, function( item ) {
+        return item < 1;
+      } )).to.not.be.ok;
+    });
+
+    it('should return false if not passed a collection', function() {
+      expect( funk.some( 5, function(num) { 
+        return num > 2; 
+      })).to.not.be.ok;
+      expect( funk.some( null, function( num ) {
+        return num === null;
+      }) ).to.not.be.ok;
     });
   });
 });

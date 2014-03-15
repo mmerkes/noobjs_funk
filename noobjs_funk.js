@@ -249,6 +249,29 @@ module.exports = (function() {
     return result;
   };
 
+  // Returns true if any of the values in a collection 
+  // pass the predicate truth test. If no predicate is
+  // provided it will just check if any of the values are truthy.
+  funk.some = function( collection, predicate ) {
+    if( !collection ) {
+      return false;
+    }
+
+    if( !predicate ) {
+      predicate = function( value ) {
+        return value;
+      }
+    }
+
+    for( var key in collection ) {
+      if( predicate( collection[key] ) ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
 /*
 -------------------Array Methods------------------
 */
