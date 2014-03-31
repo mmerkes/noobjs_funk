@@ -15,9 +15,9 @@ module.exports = (function() {
     var length, i, key;
 
     // Check for null and undefined, and false and 0
-    if( collection == null || collection == false ) {
+    if( !(isArray(collection) || isObject(collection) || (typeof collection === 'string') ) ) {
       return collection;
-    } 
+    }
     // Check to see if collection is an array or string
     // and perform the callback. If it has the length, it will
     // return a number and this will fire. Otherwise, it will return
@@ -30,7 +30,7 @@ module.exports = (function() {
         callback( collection[i], i, collection );
       }
     } else {
-      // Otherwise, iterate through the collection as if it's an 
+      // Otherwise, iterate through the collection as if it's an
       // object and call the callback on each value.
       for( key in collection ) {
         // callback( value, key, list )
@@ -56,7 +56,7 @@ module.exports = (function() {
       results.push( callback( value, index, list ));
     });
 
-    // If the collection was not actually a collection, the 
+    // If the collection was not actually a collection, the
     // each method should have return it as is, which would
     // be the first element in the array Otherwise, return
     // the results array.
@@ -145,7 +145,7 @@ module.exports = (function() {
   funk.where = function( collection, properties ) {
     // Save the matches in an array
     var results = [];
-    
+
     // Iterate through each item in the collection and test them
     each( collection, function( object ) {
       // Innocent until proven guilty
@@ -158,7 +158,7 @@ module.exports = (function() {
         }
       }
 
-      // If all properties were found in the object and 
+      // If all properties were found in the object and
       // we didn't return undefined, we have a match
       return results.push( object );
     });
@@ -217,7 +217,7 @@ module.exports = (function() {
     return results;
   };
 
-  // every returns true if all items in a list pass the 
+  // every returns true if all items in a list pass the
   // truthy test, and false if any items fail. However,
   // it returns true if not pass a list.
   funk.every = function( collection, truther ) {
@@ -249,7 +249,7 @@ module.exports = (function() {
     return result;
   };
 
-  // Returns true if any of the values in a collection 
+  // Returns true if any of the values in a collection
   // pass the predicate truth test. If no predicate is
   // provided it will just check if any of the values are truthy.
   funk.some = function( collection, predicate ) {
@@ -309,7 +309,7 @@ module.exports = (function() {
 */
 
   // indexOf finds the index of the first instance a value
-  // appears in an array, or -1 if it is not present. 
+  // appears in an array, or -1 if it is not present.
   // This is tests with ===, so it returns exact matches only.
   // Returns -1 if an array isn't passed in
   var indexOf = funk.indexOf = function( list, value ) {
@@ -331,11 +331,11 @@ module.exports = (function() {
 
   // union computes the union of passed in array or values, which is the
   // unique set of values from one or more arrays, in order.
-  // i.e. funk.union( [ 1, 2, 4 ], [ 0, 1, 2, 3, 6 ], -1 ); 
+  // i.e. funk.union( [ 1, 2, 4 ], [ 0, 1, 2, 3, 6 ], -1 );
   // -> returns [ 1, 2, 4, 0, 3, 6, -1 ]
   funk.union = function( ) {
     // Access the arguments passed into the function
-    var args = arguments, 
+    var args = arguments,
         length = args.length,
         // Using an object to store element as keys to find uniques
         unique = {},
@@ -367,7 +367,7 @@ module.exports = (function() {
               uniqueArrays[temp[j]] = true;
               results.push(temp[j]);
             }
-          } 
+          }
           // If it's not an array, check for uniqueness
           else if( !unique[temp[j]] ) {
             unique[temp[j]] = true;
@@ -383,7 +383,7 @@ module.exports = (function() {
   // Deep union -> like union put digs down
 
   // zip merges together the values of each of the arrays with the values
-  // at the corresponding position. 
+  // at the corresponding position.
   // i.e. funk.zip( [1, 2], ['a', 'b'])
   // -> [[ 1, 'a' ], [ 2, 'b' ]]
   funk.zip = function() {
@@ -416,7 +416,7 @@ module.exports = (function() {
           results[j] = [];
         }
         results[j].push( arguments[i][j] );
-      }      
+      }
     }
 
     return results;
@@ -434,7 +434,7 @@ module.exports = (function() {
     each( array, function( value ) {
       if( isArray( value )) {
         // If value is an array, pass it into the _flattener function
-        // which will flatten the array and push the elements to the 
+        // which will flatten the array and push the elements to the
         // results array.
         _flattener( value, shallow, function( value ) {
           results.push( value );
@@ -491,7 +491,7 @@ module.exports = (function() {
     return value === Object(value);
   };
   /*
-    Another method to see if a value is an object would be the 
+    Another method to see if a value is an object would be the
     typeof operator. However, the typeof operator will return
     'function' for Object and Function, which are actually objects.
   */
@@ -533,17 +533,17 @@ module.exports = (function() {
 
     // Iterate through the object to flip keys and values
     for( var key in object ) {
-      // If object is an object or array, it will set the key in 
+      // If object is an object or array, it will set the key in
       // results to be the value of object, and the value in results
       // to be the key in object. Otherwise, it will skip this
       // and return an empty object.
-      results[ object[key] ] = key; 
+      results[ object[key] ] = key;
     }
 
     return results;
   };
 
-  // pick takes an object as it's first argument, and keys or 
+  // pick takes an object as it's first argument, and keys or
   // arrays of keys as the subsequent arguments, and returns
   // an object with only those keys.
   funk.pick = function( object ) {
@@ -562,7 +562,7 @@ module.exports = (function() {
         if( isArray( arguments[i] )) {
           each( arguments[i], function( key ) {
             // The object's keys will be strings, so in order for
-            // the indexOf function to identify matches, it will 
+            // the indexOf function to identify matches, it will
             // need to compare it with strings.
             keys.push( String(key) );
           });
@@ -590,7 +590,7 @@ module.exports = (function() {
     return results;
   };
 
-  // Extend copies all properties in the source arguments into the 
+  // Extend copies all properties in the source arguments into the
   // destination object, and returns the destination object. It's
   // in order, so if any properties are named the same thing, the
   // last one will be the one in the object
@@ -658,8 +658,3 @@ var funkyTown = [
 
   return funk;
 })();
-
-
-
-
-
